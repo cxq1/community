@@ -1,5 +1,6 @@
 package com.cxq.community.community.Controller;
 
+import com.cxq.community.community.dto.PaginationDTO;
 import com.cxq.community.community.dto.QuestionDTO;
 import com.cxq.community.community.mapper.UserMapper;
 import com.cxq.community.community.model.User;
@@ -22,7 +23,9 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(HttpServletRequest request,Model model){
+    public String index(HttpServletRequest request,Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size){
         try {
             Cookie[] cookies = request.getCookies();
             for(Cookie cookie:cookies){
@@ -35,8 +38,9 @@ public class IndexController {
                     break;
                 }
             }
-            List<QuestionDTO>questionDTOS = questionService.list();
-            model.addAttribute("questions",questionDTOS);
+            PaginationDTO paginationDTO= questionService.list(page,size);
+
+            model.addAttribute("pagination",paginationDTO);
 
         }catch (Exception e){
 
