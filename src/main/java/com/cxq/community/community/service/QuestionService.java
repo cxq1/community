@@ -2,6 +2,9 @@ package com.cxq.community.community.service;
 
 import com.cxq.community.community.dto.PaginationDTO;
 import com.cxq.community.community.dto.QuestionDTO;
+import com.cxq.community.community.exception.CustomizeErrorCode;
+import com.cxq.community.community.exception.CustomizeException;
+import com.cxq.community.community.mapper.QuestionExtMapper;
 import com.cxq.community.community.mapper.QuestionMapper;
 import com.cxq.community.community.mapper.UserMapper;
 import com.cxq.community.community.model.Question;
@@ -12,6 +15,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +27,8 @@ public class QuestionService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -107,6 +115,9 @@ public class QuestionService {
 
     public QuestionDTO getById(Integer id) {
         Question question= questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -123,5 +134,14 @@ public class QuestionService {
             question.setGmtModified(question.getGmtCreate());
             questionMapper.updateByPrimaryKeySelective(question);
         }
+    }
+
+    public void incView(Integer id, HttpServletResponse response, HttpServletRequest request) {
+
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
+
     }
 }

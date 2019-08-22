@@ -9,14 +9,18 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
     @GetMapping("/question/{id}")
-    public String question(@PathVariable("id")Integer id, Model model){
+    public String question(@PathVariable("id")Integer id, Model model, HttpServletRequest request, HttpServletResponse response){
         QuestionDTO questionDTO= questionService.getById(id);
+        questionService.incView(id, response, request);
         model.addAttribute("question",questionDTO);
         return "question";
     }
