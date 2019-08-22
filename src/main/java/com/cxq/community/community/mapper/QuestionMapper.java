@@ -1,29 +1,43 @@
 package com.cxq.community.community.mapper;
 
 import com.cxq.community.community.model.Question;
-import org.apache.ibatis.annotations.*;
-
+import com.cxq.community.community.model.QuestionExample;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Repository;
 
-@Mapper
+@Repository
 public interface QuestionMapper {
-    @Insert("insert into question (title,description,gmt_create,gmt_modified,creator,tag) values (#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
-    void create(Question question);
+    int countByExample(QuestionExample example);
 
-    @Select("select * from question limit #{offset},#{size}")
-    List<Question> list(@Param("offset") Integer offset, @Param("size") Integer size);
-    @Select("select count(1) from question")
-    Integer count();
-    @Select("select count(1) from question where creator=#{id}")
-    Integer countByUserId(@Param("id") Integer id);
+    int deleteByExample(QuestionExample example);
 
-    @Select("select * from question where creator = #{id} limit #{offset},#{size}")
-    List<Question> listByUserId(@Param("id") Integer id,@Param("offset") Integer offset,@Param("size") Integer size);
+    int deleteByPrimaryKey(Integer id);
 
-    @Select("select * from question where id =#{id}")
-    Question getById(@Param("id") Integer id);
+    int insert(Question record);
 
-    @Update("update question set title = #{title}, description = #{description}, gmt_modified = #{gmtModified}, tag = #{tag} where id = #{id}")
-    void update(Question question);
+    int insertSelective(Question record);
 
+    List<Question> selectByExampleWithBLOBsWithRowbounds(QuestionExample example, RowBounds rowBounds);
+
+    List<Question> selectByExampleWithBLOBs(QuestionExample example);
+
+    List<Question> selectByExampleWithRowbounds(QuestionExample example, RowBounds rowBounds);
+
+    List<Question> selectByExample(QuestionExample example);
+
+    Question selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") Question record, @Param("example") QuestionExample example);
+
+    int updateByExampleWithBLOBs(@Param("record") Question record, @Param("example") QuestionExample example);
+
+    int updateByExample(@Param("record") Question record, @Param("example") QuestionExample example);
+
+    int updateByPrimaryKeySelective(Question record);
+
+    int updateByPrimaryKeyWithBLOBs(Question record);
+
+    int updateByPrimaryKey(Question record);
 }
