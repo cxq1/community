@@ -16,6 +16,15 @@ public class Comment {
     private Long likeCount;
 
     private String content;
+    private Integer commentCount;
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
 
     public Long getId() {
         return id;
