@@ -1,6 +1,6 @@
 package com.cxq.community.community.Controller;
 
-import com.cxq.community.community.dto.CommentDTO;
+import com.cxq.community.community.dto.CommentCreateDTO;
 import com.cxq.community.community.dto.ResultDTO;
 import com.cxq.community.community.exception.CustomizeErrorCode;
 import com.cxq.community.community.mapper.CommentMapper;
@@ -25,7 +25,7 @@ public class CommentController {
 
     @ResponseBody
     @RequestMapping(value = "/comment",method = RequestMethod.POST)
-    public Object post(@RequestBody CommentDTO commentDTO, HttpServletRequest request){
+    public Object post(@RequestBody CommentCreateDTO commentDTO, HttpServletRequest request){
 
         User user = (User) request.getSession().getAttribute("user");
         if(user==null){
@@ -38,7 +38,7 @@ public class CommentController {
         comment.setType(commentDTO.getType());
         comment.setGmtModified(System.currentTimeMillis());
         comment.setGmtCreate(System.currentTimeMillis());
-        comment.setCommentator(1L);
+        comment.setCommentator(user.getId());
         comment.setLikeCount(0L);
 
         commentService.insert(comment);
