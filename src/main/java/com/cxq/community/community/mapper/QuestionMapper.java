@@ -5,15 +5,13 @@ import com.cxq.community.community.model.QuestionExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface QuestionMapper {
     int countByExample(QuestionExample example);
 
     int deleteByExample(QuestionExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     int insert(Question record);
 
@@ -27,7 +25,7 @@ public interface QuestionMapper {
 
     List<Question> selectByExample(QuestionExample example);
 
-    Question selectByPrimaryKey(Integer id);
+    Question selectByPrimaryKey(Long id);
 
     int updateByExampleSelective(@Param("record") Question record, @Param("example") QuestionExample example);
 
