@@ -3,6 +3,7 @@ package com.cxq.community.community.Controller;
 import com.cxq.community.community.dto.CommentDTO;
 import com.cxq.community.community.dto.QuestionDTO;
 import com.cxq.community.community.enums.CommentTypeEnum;
+import com.cxq.community.community.model.Question;
 import com.cxq.community.community.service.CommentService;
 import com.cxq.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,13 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id")Long id, Model model, HttpServletRequest request, HttpServletResponse response){
         QuestionDTO questionDTO= questionService.getById(id);
+        List<QuestionDTO>relatedQuestions = questionService.selectRelated(questionDTO);
         List<CommentDTO>comments= commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 
         questionService.incView(id, response, request);
         model.addAttribute("question",questionDTO);
         model.addAttribute("comments",comments);
+        model.addAttribute("relatedQuestions",relatedQuestions);
         return "question";
     }
 }

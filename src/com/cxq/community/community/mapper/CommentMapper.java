@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 public interface CommentMapper {
-    int countByExample(CommentExample example);
+    long countByExample(CommentExample example);
 
     int deleteByExample(CommentExample example);
 

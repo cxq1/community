@@ -45,6 +45,7 @@ public class AuthorizeController {
 //            request.getSession().setAttribute("user",githubUser);
             User user =new User();
             user.setName(githubUser.getLogin());
+
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setAccountId(String.valueOf(githubUser.getId()));
