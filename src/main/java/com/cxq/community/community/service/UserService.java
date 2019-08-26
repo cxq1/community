@@ -15,15 +15,17 @@ public class UserService {
 
     public void createOrUpdate(User user) {
         UserExample userExample = new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andAccountIdEqualTo(user.getAccountId());
-        List<User> dbUsers = userMapper.selectByExample(userExample);
-        if(dbUsers.size()==0){
+        userExample.createCriteria()
+                .andAccountIdEqualTo(user.getAccountId());
+        List<User> users = userMapper.selectByExample(userExample);
+        if (users.size() == 0) {
+            // 插入
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
-        }else {
-            User dbUser = dbUsers.get(0);
+        } else {
+            //更新
+            User dbUser = users.get(0);
             User updateUser = new User();
             updateUser.setGmtModified(System.currentTimeMillis());
             updateUser.setAvatarUrl(user.getAvatarUrl());

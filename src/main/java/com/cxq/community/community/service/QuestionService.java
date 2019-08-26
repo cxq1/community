@@ -129,26 +129,28 @@ public class QuestionService {
     }
 
     public QuestionDTO getById(Long id) {
-        Question question= questionMapper.selectByPrimaryKey(id);
-        if(question==null){
+        Question question = questionMapper.selectByPrimaryKey(id);
+        if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(question,questionDTO);
+        BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
     }
 
     public void createOrUpdate(Question question) {
-        if(question.getId()==null){
+        if (question.getId() == null) {
+            // 创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
             question.setViewCount(0);
             question.setLikeCount(0);
             question.setCommentCount(0);
             questionMapper.insert(question);
-        }else {
+        } else {
+            // 更新
             Question updateQuestion = new Question();
             updateQuestion.setGmtModified(System.currentTimeMillis());
             updateQuestion.setTitle(question.getTitle());
@@ -174,19 +176,19 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
-        if(StringUtils.isBlank(queryDTO.getTag())){
+        if (StringUtils.isBlank(queryDTO.getTag())) {
             return new ArrayList<>();
         }
-        String[] tags= queryDTO.getTag().split(",");
+        String[] tags = StringUtils.split(queryDTO.getTag(), ",");
         String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
         Question question = new Question();
         question.setId(queryDTO.getId());
         question.setTag(regexpTag);
 
         List<Question> questions = questionExtMapper.selectRelated(question);
-        List<QuestionDTO> questionDTOS = questions.stream().map(q->{
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(q,questionDTO);
+            BeanUtils.copyProperties(q, questionDTO);
             return questionDTO;
         }).collect(Collectors.toList());
         return questionDTOS;
