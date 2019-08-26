@@ -5,6 +5,7 @@ import com.cxq.community.community.dto.QuestionDTO;
 import com.cxq.community.community.mapper.UserMapper;
 import com.cxq.community.community.model.User;
 import com.cxq.community.community.service.QuestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
+@Slf4j
 public class IndexController {
     @Autowired
     private UserMapper userMapper;
@@ -32,6 +34,7 @@ public class IndexController {
             PaginationDTO paginationDTO= questionService.list(search,page,size);
             model.addAttribute("pagination",paginationDTO);
             model.addAttribute("search",search);
+            log.error("callback get paginationDTO error,{}", paginationDTO);
         }catch (Exception e){
 
         }
