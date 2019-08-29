@@ -11,6 +11,7 @@ import com.cxq.community.community.mapper.UserMapper;
 import com.cxq.community.community.model.Question;
 import com.cxq.community.community.model.QuestionExample;
 import com.cxq.community.community.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
@@ -78,7 +80,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-
+        log.error("paginationDTO:"+paginationDTO);
         paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
