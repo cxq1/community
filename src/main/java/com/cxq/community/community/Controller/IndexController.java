@@ -31,9 +31,9 @@ public class IndexController {
                         @RequestParam(name = "search", required = false) String search) {
         PaginationDTO<QuestionDTO> pagination=null;
         try {
-             pagination = questionService.list(search, page, size);
+            System.out.println("search:"+search);
+            pagination = questionService.list(search, page, size);
             model.addAttribute("pagination", pagination);
-//        System.out.println("pagination"+pagination);
             model.addAttribute("search", search);
             return "index";
         }catch (Exception e){
