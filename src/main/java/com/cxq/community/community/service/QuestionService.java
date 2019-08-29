@@ -50,8 +50,11 @@ public class QuestionService {
 
         QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
         questionQueryDTO.setSearch(search);
+        Integer totalCount=0;
+        if(search!=null&&search.length()!=0){
 
-        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
+            totalCount = questionExtMapper.countBySearch(questionQueryDTO);
+        }
 
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -80,7 +83,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        log.error("paginationDTO:"+paginationDTO);
+
         paginationDTO.setData(questionDTOList);
         return paginationDTO;
     }
