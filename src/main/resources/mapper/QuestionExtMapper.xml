@@ -42,7 +42,7 @@
 
     <select id="selectBySearch" parameterType="com.cxq.community.community.dto.QuestionQueryDTO"
             resultMap="BaseResultMap">
-        select * from QUESTION
+        select * from question
         <where>
             <if test="search != null">
                 and title regexp #{search}
