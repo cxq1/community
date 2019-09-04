@@ -37,27 +37,22 @@ public class QuestionService {
     @Autowired
     private QuestionExtMapper questionExtMapper;
 
-    public PaginationDTO list(String search,Integer page, Integer size) {
+    public PaginationDTO list(String search,String tag,Integer page, Integer size) {
         try {
             if (StringUtils.isNotBlank(search)) {
                 String[] tags = StringUtils.split(search, " ");
                 search = Arrays.stream(tags).collect(Collectors.joining("|"));
 
             }
-
             PaginationDTO paginationDTO = new PaginationDTO();
-
             Integer totalPage;
-
             QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
             questionQueryDTO.setSearch(search);
+            questionQueryDTO.setTag(tag);
             Integer totalCount=0;
-            if(StringUtils.isNotBlank(search)){
 
-                 totalCount = questionExtMapper.countBySearch(questionQueryDTO);
-            }else {
-                totalCount=questionMapper.countByExample(new QuestionExample());
-            }
+            totalCount = questionExtMapper.countBySearch(questionQueryDTO);
+
 
             if (totalCount % size == 0) {
                 totalPage = totalCount / size;
