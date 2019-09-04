@@ -50,7 +50,7 @@ public class HotTagSchedule {
 
 
         hotTagCache.updateTags(priorties);
-        System.out.println(priorties);
+
         log.info("hotSchedule stop:{}",new Date());
     }
 }
